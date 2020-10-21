@@ -1,0 +1,109 @@
+/*Given two strings ‘str1’ and ‘str2’ of size m and n respectively. The task is to remove/delete and insert minimum number of characters 
+from/in str1 so as to transform it into str2. It could be possible that the same character needs to be removed/deleted from one point of str1 
+and inserted to some another point.
+
+Input:
+
+The first line of input contains an integer T denoting the number of test cases. Then T test cases follow. The first line of each test case
+ contains integers N and M denoting the length of the strings str1 and str2. Both the strings consist of only small letter alphabets.
+
+The second line of each test case contains the strings str1 and str2.
+
+
+Output:
+
+Print the total no of insertions and deletions to be done to convert str1 to str2. Output the answer in a new line.
+
+
+Constraints:
+
+1<= T <=100
+
+1<= N, M <=1000
+
+
+Example:
+
+Input:
+
+1
+
+4 3
+
+heap pea 
+
+Output:
+
+3*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int max(int x,int y)
+{
+    return (x>y)?x:y;    
+}
+
+int LCS(char* str1,int n,char* str2,int m)
+{
+    int dp[n+1][m+1];
+    
+    for(int i=0;i<=n;i++)
+    {
+        dp[i][0]=0;
+    }
+    
+    for(int i=0;i<=m;i++)
+    {
+        dp[0][i]=0;
+    }
+    
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=1;j<=m;j++)
+        {
+            if(str1[i-1]==str2[j-1])
+            {
+                dp[i][j]=dp[i-1][j-1]+1;
+            }
+            else
+            {
+                dp[i][j]=max(dp[i-1][j],dp[i][j-1]);
+            }
+        }
+    }
+    
+    return dp[n][m];
+}
+
+int min_a_b(char* str1,int n,char* str2,int m)
+{
+    return n+m-2*LCS(str1,n,str2,m);
+}
+
+int main() 
+{
+	int t;
+	scanf("%d",&t);
+	
+	while(t--)
+	{
+	    int n;
+	    int m;
+	    
+	    scanf("%d",&n);
+	    scanf("%d",&m);
+	    
+	    char* str1;
+	    char* str2;
+	    
+	    str1=(char*)malloc(sizeof(char)*n);
+	    str2=(char*)malloc(sizeof(char)*m);
+	    
+	    scanf("%s",str1);
+	    scanf("%s",str2);
+	    
+	    printf("%d\n",min_a_b(str1,n,str2,m));
+	}
+	return 0;
+}

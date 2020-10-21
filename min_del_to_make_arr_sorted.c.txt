@@ -1,0 +1,131 @@
+/*Given an array of n integers. The task is to remove or delete minimum number of elements from the array so that when the remaining
+ elements are placed in the same sequence order form a sorted sequence.
+
+Input:
+
+The first line of input contains an integer T denoting the number of test cases. Then T test cases follow. The first line of each test case contains
+ an integer N denoting the size of array A.
+
+The second line of each test case contains N space separated integers denoting elements of the array A[ ].
+
+
+Output:
+
+Output the minimum number of deletions to make a sorted sequence. Print the answer in a new line.
+
+
+Constraints:
+
+1<= T <=100
+
+1<= N <=1000
+
+1<= A[ ] <=1000
+
+
+Example:
+
+Input:
+
+1
+
+5
+
+5 6 1 7 4
+
+Output:
+
+2*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+/*int compare(const void* p,const void* q)
+{
+    return *(int*)p - *(int*)q;
+}
+
+int max(int x,int y)
+{
+    return (x>y)?x:y;
+}*/
+
+int min_del(int* a,int n)
+{
+    /*int* b;
+    b=(int*)malloc(sizeof(int)*n);
+    
+    for(int i=0;i<n;i++)
+    {
+        b[i]=a[i];
+    }
+    
+    qsort(a,n,sizeof(a[0]),compare);
+    
+   int dp[n+1][n+1];
+    
+    for(int i=0;i<=n;i++)
+    {
+        dp[i][0]=dp[0][i]=0;
+    }
+    
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=1;j<=n;j++)
+        {
+            if(a[i-1]==b[j-1])
+            {
+                dp[i][j]=dp[i-1][j-1]+1;
+            }
+            else
+            {
+                dp[i][j]=max(dp[i-1][j],dp[i][j-1]);
+            }
+        }
+    }
+    */
+    
+    int dp[n];
+    int max=1;
+    
+    for(int i=0;i<n;i++)
+        dp[i]=1;
+    
+    for(int i=1;i<n;i++)
+    {
+        for(int j=0;j<i;j++)
+        {
+            if(a[i]>a[j] && dp[i]<dp[j]+1)
+            {
+                dp[i]=dp[j]+1;
+                
+                if(dp[i]>max)
+                    max=dp[i];
+            }
+        }
+    }
+    return n-max;
+}
+
+int main() {
+	
+	int t;
+	scanf("%d",&t);
+	
+	while(t--)
+	{
+	    int n;
+	    scanf("%d",&n);
+	    
+	    int* arr;
+	    arr=(int*)malloc(sizeof(int)*n);
+	    
+	    for(int i=0;i<n;i++)
+	    {
+	        scanf("%d",&arr[i]);
+	    }
+	    
+	    printf("%d\n",min_del(arr,n));
+	}
+	return 0;
+}

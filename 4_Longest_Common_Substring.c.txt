@@ -1,0 +1,95 @@
+/*Given two strings X and Y. The task is to find the length of the longest common substring.
+
+Input:
+First line of the input contains number of test cases T. Each test case consist of three lines, first of which contains 2 space separated
+integers N and M denoting the size of string X and Y strings respectively. The next two lines contains the string X and Y.
+
+Output:
+For each test case print the length of longest  common substring of the two strings .
+
+Constraints:
+1 <= T <= 200
+1 <= N, M <= 100
+
+Example:
+Input:
+2
+6 6
+ABCDGH
+ACDGHR
+3 2
+ABC
+AC
+
+Output:
+4
+1*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int longest_commmon_substring(char* str1,int n,char* str2,int m)
+{
+    int dp[n+1][m+1];//NULL-NULL +1
+    
+    for(int i=0;i<=n;i++)
+    {
+        dp[i][0]=0;
+    }
+    
+    for(int j=0;j<=m;j++)
+    {
+        dp[0][j]=0;
+    }
+    
+    int max=0;
+    
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=1;j<=m;j++)
+        {
+            if(str1[i-1]==str2[j-1])
+            {
+                dp[i][j]=dp[i-1][j-1]+1;
+                
+                if(max<dp[i][j])
+                {
+                    max=dp[i][j];
+                }
+            }
+            else
+            {
+                dp[i][j]=0;
+            }
+        }
+    }
+    
+    return max;
+}
+
+int main() {
+	
+	int t;
+	scanf("%d",&t);
+	
+	while(t--)
+	{
+	    int n;
+	    int m;
+	    
+	    scanf("%d",&n);
+	    scanf("%d",&m);
+	    
+	    char* str1;
+	    char* str2;
+	    
+	    str1=(char*)malloc(sizeof(char)*n);
+	    str2=(char*)malloc(sizeof(char)*m);
+	    
+	    scanf("%s",str1);
+	    scanf("%s",str2);
+	    
+	    printf("%d\n",longest_commmon_substring(str1,n,str2,m));
+	}
+	return 0;
+}

@@ -1,0 +1,95 @@
+/*Given an array of integers and a sum, the task is to count all subsets of given array with sum equal to given sum.
+
+Input:
+The first line of input contains an integer T denoting the number of test cases. Then T test cases follow. Each test case contains an 
+integer n denoting the size of the array. The next line contains n space separated integers forming the array. The last line contains the sum.
+
+Output:
+Count all the subsets of given array with sum equal to given sum.
+
+NOTE: Since result can be very large, print the value modulo 109+7.
+
+Constraints:
+1<=T<=100
+1<=n<=103
+1<=a[i]<=103
+1<=sum<=103
+
+Example:
+Input:
+2
+6
+2 3 5 6 8 10
+10
+5
+1 2 3 4 5
+10
+
+Output:
+3
+3
+
+Explanation:
+Testcase 1: possible subsets : (2,3,5) , (2,8) and (10)
+Testcase 2: possible subsets : (1,2,3,4) , (2,3,5) and (1,4,5)*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+long int no_of_subsets_having_sum(int* arr,int n,int sum)
+{
+    long int dp[n+1][sum+1];
+    
+    for(int i=0;i<=sum;i++)
+    {
+        dp[0][i]=0;
+    }
+    
+    for(int i=0;i<=n;i++)
+    {
+        dp[i][0]=1;
+    }
+    
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=1;j<=sum;j++)
+        {
+            if(arr[i-1]<=j)
+            {
+                dp[i][j]=(dp[i-1][j]+dp[i-1][j-arr[i-1]])%1000000007;
+            }
+            else if(arr[i-1]>j)
+            {
+                dp[i][j]=dp[i-1][j]%1000000007;
+            }
+        }
+    }
+    
+    return dp[n][sum]; 
+}
+
+int main() {
+	
+	int t;
+	scanf("%d",&t);
+	
+	while(t--)
+	{
+	    int n;
+	    scanf("%d",&n);
+	    
+	    int* arr;
+	    arr=(int*)malloc(sizeof(int)*n);
+	    
+	    for(int i=0;i<n;i++)
+	    {
+	        scanf("%d",&arr[i]);
+	    }
+	    
+	    int sum;
+	    scanf("%d",&sum);
+	    
+	    printf("%ld\n",no_of_subsets_having_sum(arr,n,sum));
+	}
+	return 0;
+}

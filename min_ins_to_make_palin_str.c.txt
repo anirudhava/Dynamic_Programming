@@ -1,0 +1,69 @@
+// same as min_del_to_make_palin_str.c
+
+//rev
+//lcs
+//n-dp[n][n]
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int max(int x,int y)
+{
+    return (x>y)?x:y;    
+}
+
+int min_ins_palin(char* str1,int n)
+{
+    char* str2;
+    str2=(char*)malloc(sizeof(char)*(n+1));
+    
+    for(int i=n-1;i>=0;i--)
+    {
+        str2[n-i-1]=str1[i];
+    }
+    
+    str2[n]='\0';
+    
+    int dp[n+1][n+1];
+    
+    for(int i=0;i<=n;i++)
+    {
+        dp[i][0]=dp[0][i]=0;
+    }
+    
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=1;j<=n;j++)
+        {
+            if(str1[i-1]==str2[j-1])
+            {
+                dp[i][j]=dp[i-1][j-1]+1;
+            }
+            else
+            {
+                dp[i][j]=max(dp[i-1][j],dp[i][j-1]);
+            }
+        }
+    }
+    
+    return n-dp[n][n];
+}
+
+int main() 
+{
+    int t;
+    scanf("%d",&t);
+    
+    while(t--)
+    {
+        char* str;
+        str=(char*)malloc(sizeof(char)*10000);
+        
+        scanf("%s",str);
+        
+        int n=strlen(str);
+        
+        printf("%d\n",min_ins_palin(str,n));
+    }
+	return 0;
+}

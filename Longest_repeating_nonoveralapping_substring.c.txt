@@ -1,0 +1,107 @@
+/*Given a string str, find the longest repeating non-overlapping substring in it. 
+In other words find 2 identical substrings of maximum length which do not overlap.
+ If there exists more than one such substring return any of them.
+
+Input:
+
+The first line of input contains an integer T denoting the number of test cases.
+ Then T test cases follow. The first line of each test case contains an integer N denoting the length 
+of the string str.
+
+The second line of each test case contains the string str.It consists of only lower case english alphabets.
+
+Output:
+
+Print the longest non - overlapping substring for each test case in a new line. If no such sub - sequence exists print -1.
+
+
+Constraints:
+
+1<= T<=100
+
+1<= N <=1000
+
+
+Example:
+
+Input:
+
+1
+
+13
+
+geeksforgeeks
+
+Output:
+
+geeks*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+void print_sub_string(char* str,int n)
+{
+    int dp[n+1][n+1];
+    
+    int max=0;
+    int j_hold;
+    
+    for(int i=0;i<=n;i++)
+    {
+        dp[0][i]=0;
+        dp[i][0]=0;
+    }
+    
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=1;j<=n;j++)
+        {
+            if(str[i-1]==str[j-1] && dp[i-1][j-1] < j-i)
+            {
+                dp[i][j]=dp[i-1][j-1]+1;
+                
+                if(max<dp[i][j])
+                {
+                    max=dp[i][j];
+                    j_hold=j;
+                }
+            }
+            else
+            {
+                dp[i][j]=0;
+            }
+        }
+    }
+    
+    if(max==0)
+        printf("-1\n");
+    else
+    {
+        for(int i=j_hold-max;i<=j_hold-1;i++)
+        {
+            printf("%c",str[i]);
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+	
+	int t;
+	scanf("%d",&t);
+	
+	while(t--)
+	{
+	    int n;
+	    scanf("%d",&n);
+	    
+	    char* str;
+	    str=(char*)malloc(sizeof(char)*(n+1));
+	    
+	    scanf("%s",str);
+	    
+	    print_sub_string(str,n);
+	    
+	}
+	return 0;
+}

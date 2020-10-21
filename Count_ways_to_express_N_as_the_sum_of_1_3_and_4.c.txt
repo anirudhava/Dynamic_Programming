@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// This is not a variant of subset sum or unbound knapsack,but it looks like it
+// in unbound knapsack order doesnot matter
+// here the order matter...use the code for no of ways amt can be formed using 
+// the coins
+
+long long int ways(int* arr,int k,int n)
+{
+    long long int dp[n+1];
+    dp[0]=1;
+    
+    for(int i=1;i<=n;i++)
+    {
+        dp[i]=0;
+        
+        for(int j=0;j<k;j++)
+        {
+            if(i>=arr[j])
+            {
+                dp[i]=(dp[i]%1000000007+dp[i-arr[j]]%1000000007)%1000000007;
+            }
+        }
+    }
+    
+    return dp[n];
+}
+
+int main() {
+	
+	int t;
+	scanf("%d",&t);
+	
+	while(t--)
+	{
+	    int n;
+	    scanf("%d",&n);
+	    
+	    int num[3];
+	    num[0]=1;
+	    num[1]=3;
+	    num[2]=4;
+	    
+	    printf("%lld\n",ways(num,3,n));
+	}
+	
+	return 0;
+}
